@@ -1,6 +1,7 @@
 <template>
-  <span>
-    <h3>LEVEL {{ level }}</h3>
+  <span class="level-container">
+    <!-- <h4>LEVEL</h4> -->
+    <h3>{{ level }}</h3>
   </span>
 </template>
 

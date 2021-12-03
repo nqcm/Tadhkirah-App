@@ -1,4 +1,6 @@
 import { DateTime } from 'luxon';
+// import { db } from '@/main';
+import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 
 import calculateDueDate from '../../../utilities/calculateDueDate';
 
@@ -9,29 +11,52 @@ const now = DateTime.now()
 export default {
   async loadRecords(context) {
     const userId = context.rootGetters.userId;
-    const response = await fetch(
-      `https://tadhkirah-13575-default-rtdb.firebaseio.com/records/${userId}.json`
+    const db = getFirestore();
+    const querySnapshot = await getDocs(
+      collection(db, `users/${userId}/records`)
     );
-    const responseData = await response.json();
-    if (!response.ok) {
-      const error = new Error(responseData.message || 'Failed to fetch!');
-      throw error;
-    }
     const records = [];
-    for (const key in responseData) {
+    querySnapshot.forEach(doc => {
+      const data = doc.data();
       const record = {
-        id: key,
-        name: responseData[key].name,
-        level: responseData[key].level,
-        description: responseData[key].description,
-        revDate: responseData[key].revDate,
-        doneDate: responseData[key].doneDate,
-        dueDate: responseData[key].dueDate,
-        counter: responseData[key].counter,
-        dateAdded: responseData[key].dateAdded
+        id: doc.id,
+        name: data.name,
+        level: data.level,
+        description: data.description,
+        revDate: data.revDate,
+        doneDate: data.doneDate,
+        dueDate: data.dueDate,
+        counter: data.counter,
+        dateAdded: data.dateAdded
       };
       records.push(record);
-    }
+    });
+    // console.log(records1);
+
+    // const response = await fetch(
+    //   `https://tadhkirah-13575-default-rtdb.firebaseio.com/records/${userId}.json`
+    // );
+    // const responseData = await response.json();
+    // if (!response.ok) {
+    //   const error = new Error(responseData.message || 'Failed to fetch!');
+    //   throw error;
+    // }
+    // const records = [];
+    // for (const key in responseData) {
+    //   const record = {
+    //     id: key,
+    //     name: responseData[key].name,
+    //     level: responseData[key].level,
+    //     description: responseData[key].description,
+    //     revDate: responseData[key].revDate,
+    //     doneDate: responseData[key].doneDate,
+    //     dueDate: responseData[key].dueDate,
+    //     counter: responseData[key].counter,
+    //     dateAdded: responseData[key].dateAdded
+    //   };
+    //   console.log(records);
+    //   records.push(record);
+    // }
     context.commit('setRecords', records);
   },
   async addRecord(context, data) {
