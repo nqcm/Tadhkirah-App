@@ -1,6 +1,14 @@
 import { DateTime } from 'luxon';
 // import { db } from '@/main';
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDocs,
+  addDoc,
+  setDoc,
+  deleteDoc
+} from 'firebase/firestore/lite';
 
 import calculateDueDate from '../../../utilities/calculateDueDate';
 
@@ -57,11 +65,13 @@ export default {
     //   console.log(records);
     //   records.push(record);
     // }
-    context.commit('setRecords', records);
+    context.commit('loadRecords', records);
   },
   async addRecord(context, data) {
     const dueDate = calculateDueDate(data.level, now);
     const userId = context.rootGetters.userId;
+    const db = getFirestore();
+
     const recordData = {
       name: data.name,
       level: data.level,
@@ -72,29 +82,34 @@ export default {
       counter: 0,
       dateAdded: now
     };
-    const response = await fetch(
-      `https://tadhkirah-13575-default-rtdb.firebaseio.com/records/${userId}.json`,
-      {
-        method: 'POST',
-        body: JSON.stringify(recordData)
-      }
+    const docRef = await addDoc(
+      collection(db, `users/${userId}/records`),
+      recordData
     );
-    const responseData = await response.json();
-    if (!response.ok) {
-      const error = new Error(responseData.message || 'Something went wrong!');
-      throw error;
-    }
+    // const response = await fetch(
+    //   `https://tadhkirah-13575-default-rtdb.firebaseio.com/records/${userId}.json`,
+    //   {
+    //     method: 'POST',
+    //     body: JSON.stringify(recordData)
+    //   }
+    // );
+    // const responseData = await response.json();
+    // if (!response.ok) {
+    //   const error = new Error(responseData.message || 'Something went wrong!');
+    //   throw error;
+    // }
     context.commit('addRecord', {
       ...recordData,
-      id: responseData.name
+      id: docRef.id
     });
   },
   async editRecord(context, data) {
     const dueDate = calculateDueDate(data.level, data.revDate);
     const userId = context.rootGetters.userId;
     const recId = data.id;
+    const db = getFirestore();
+
     const recordData = {
-      // id: data.id,
       name: data.name,
       level: data.level,
       description: data.description,
@@ -104,18 +119,9 @@ export default {
       counter: data.counter,
       dateAdded: data.dateAdded
     };
-    const response = await fetch(
-      `https://tadhkirah-13575-default-rtdb.firebaseio.com/records/${userId}/${recId}.json`,
-      {
-        method: 'PUT',
-        body: JSON.stringify(recordData)
-      }
-    );
-    const responseData = await response.json();
-    if (!response.ok) {
-      const error = new Error(responseData.message || 'Something went wrong!');
-      throw error;
-    }
+
+    const docRef = doc(db, `users/${userId}/records`, recId);
+    await setDoc(docRef, recordData, { merge: true });
     context.commit('editRecord', {
       ...recordData,
       id: data.id
@@ -125,6 +131,8 @@ export default {
     const userId = context.rootGetters.userId;
     const rec = context.getters.records.find(r => r.id === id);
     const dueDate = calculateDueDate(1, now);
+    const db = getFirestore();
+
     const recordData = {
       name: rec.name,
       level: 1,
@@ -135,18 +143,9 @@ export default {
       counter: rec.counter + 1,
       dateAdded: rec.dateAdded
     };
-    const response = await fetch(
-      `https://tadhkirah-13575-default-rtdb.firebaseio.com/records/${userId}/${id}.json`,
-      {
-        method: 'PUT',
-        body: JSON.stringify(recordData)
-      }
-    );
-    const responseData = await response.json();
-    if (!response.ok) {
-      const error = new Error(responseData.message || 'Something went wrong!');
-      throw error;
-    }
+    const docRef = doc(db, `users/${userId}/records`, id);
+    await setDoc(docRef, recordData, { merge: true });
+
     context.commit('editRecord', {
       ...recordData,
       id: id
@@ -157,6 +156,8 @@ export default {
     const rec = context.getters.records.find(r => r.id === id);
     const dueDate = calculateDueDate(rec.level, now);
     const newLevel = rec.level < 5 ? rec.level + 1 : 5;
+    const db = getFirestore();
+
     const recordData = {
       name: rec.name,
       level: newLevel,
@@ -167,18 +168,8 @@ export default {
       counter: rec.counter + 1,
       dateAdded: rec.dateAdded
     };
-    const response = await fetch(
-      `https://tadhkirah-13575-default-rtdb.firebaseio.com/records/${userId}/${id}.json`,
-      {
-        method: 'PUT',
-        body: JSON.stringify(recordData)
-      }
-    );
-    const responseData = await response.json();
-    if (!response.ok) {
-      const error = new Error(responseData.message || 'Something went wrong!');
-      throw error;
-    }
+    const docRef = doc(db, `users/${userId}/records`, id);
+    await setDoc(docRef, recordData, { merge: true });
 
     context.commit('editRecord', {
       ...recordData,
@@ -187,18 +178,11 @@ export default {
   },
   async deleteRecord(context, id) {
     const userId = context.rootGetters.userId;
-    const response = await fetch(
-      `https://tadhkirah-13575-default-rtdb.firebaseio.com/records/${userId}/${id}.json`,
-      {
-        method: 'DELETE',
-        body: null
-      }
-    );
-    const responseData = await response.json();
-    if (!response.ok) {
-      const error = new Error(responseData.message || 'Something went wrong!');
-      throw error;
-    }
+    const db = getFirestore();
+
+    const docRef = doc(db, `users/${userId}/records`, id);
+    await deleteDoc(docRef);
+
     context.commit('deleteRecord', id);
   }
 };

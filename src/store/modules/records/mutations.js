@@ -1,5 +1,5 @@
 export default {
-  setRecords(state, payload) {
+  loadRecords(state, payload) {
     state.records = payload;
   },
   addRecord(state, payload) {

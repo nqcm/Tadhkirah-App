@@ -48,6 +48,7 @@ export default {
   created() {
     this.rec = this.$store.getters.records.find((r) => r.id === this.id);
   },
+
   computed: {
     isTodaysRec() {
       const today = DateTime.now().toISO().split('T')[0];
