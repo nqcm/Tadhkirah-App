@@ -1,25 +1,39 @@
 <template>
-  <AddRecord></AddRecord>
+  <div>
+    <the-header></the-header>
+    <add-record-button></add-record-button>
+    <!-- <records-list></records-list> -->
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-import AddRecord from "./components/AddRecord.vue";
+import TheHeader from './components/layout/TheHeader.vue';
+import AddRecordButton from './components/records/AddRecordButton.vue';
+// import RecordsList from './components/records/RecordsList.vue';
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
-    AddRecord,
+    TheHeader,
+    AddRecordButton,
   },
 };
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: #f5efe8;
 }
 </style>
