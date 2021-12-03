@@ -5,10 +5,6 @@
         v-for="record in filteredRecords"
         :key="record.id"
         :id="record.id"
-        :name="record.name"
-        :description="record.description"
-        :level="record.level"
-        :dueDate="record.dueDate"
       >
       </single-record-card>
     </div>
