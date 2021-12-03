@@ -18,6 +18,9 @@ const now = DateTime.now()
 
 export default {
   async loadRecords(context) {
+    if (!context.getters.shouldUpdate) {
+      return;
+    }
     const userId = context.rootGetters.userId;
     const db = getFirestore();
     const querySnapshot = await getDocs(
@@ -66,6 +69,7 @@ export default {
     //   records.push(record);
     // }
     context.commit('loadRecords', records);
+    context.commit('setFetchTimestamp');
   },
   async addRecord(context, data) {
     const dueDate = calculateDueDate(data.level, now);

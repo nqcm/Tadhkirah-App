@@ -1,6 +1,7 @@
 <template>
   <div>
     <edit-record
+      :key="id"
       :show="editDialogOpen"
       :id="id"
       @close="closeDialog"
@@ -37,7 +38,6 @@ export default {
   components: {
     EditRecord,
   },
-  // props: ['id', 'name', 'description', 'level', 'dueDate', 'rec'],
   props: ['id'],
   data() {
     return {
@@ -71,6 +71,7 @@ export default {
     },
     closeDialog() {
       this.editDialogOpen = false;
+      this.rec = this.$store.getters.records.find((r) => r.id === this.id);
     },
     makeLevelOne() {
       this.$store.dispatch('makeLevelOne', this.rec.id);

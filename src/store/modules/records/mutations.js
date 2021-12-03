@@ -12,5 +12,8 @@ export default {
   deleteRecord(state, id) {
     const recIndex = state.records.findIndex(rec => rec.id === id);
     state.records.splice(recIndex, 1);
+  },
+  setFetchTimestamp(state) {
+    state.lastFetch = new Date().getTime();
   }
 };

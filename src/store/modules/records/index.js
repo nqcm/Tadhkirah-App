@@ -5,6 +5,7 @@ import getters from './getters.js';
 export default {
   state() {
     return {
+      lastFetch: null,
       records: [
         {
           id: 123456789,

@@ -9,6 +9,9 @@
             </header>
 
             <section class="dialog-body">
+              <div v-if="isSaving">
+                <base-spinner></base-spinner>
+              </div>
               <form @submit.prevent="submitForm">
                 <div
                   class="form-control"
@@ -131,6 +134,7 @@ export default {
       },
       userInput: {},
       showDeleteWarning: false,
+      isSaving: false,
     };
   },
   created() {
@@ -173,7 +177,8 @@ export default {
         this.formIsValid.dateField = false;
       }
     },
-    submitForm() {
+    async submitForm() {
+      this.isSaving = true;
       this.validateName();
       if (!this.formIsValid.nameField) {
         return;
@@ -182,8 +187,9 @@ export default {
       if (!this.formIsValid.dateField) {
         return;
       }
-      this.$store.dispatch('editRecord', this.userInput);
+      await this.$store.dispatch('editRecord', this.userInput);
       this.resetForm();
+      this.isSaving = false;
       this.$emit('close');
     },
     resetForm() {

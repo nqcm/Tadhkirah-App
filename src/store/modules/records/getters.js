@@ -5,7 +5,10 @@ const now = today.toISO().split('T')[0];
 
 export default {
   records(state) {
-    return state.records;
+    // return state.records;
+    return state.records.sort((a, b) =>
+      a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+    );
   },
   hasRecords(state) {
     return state.records && state.records.length > 0;
@@ -27,5 +30,13 @@ export default {
   doneHasRecords(_, getters) {
     const recs = getters.doneRecords;
     return recs && recs.length > 0;
+  },
+  shouldUpdate(state) {
+    const lastFetch = state.lastFetch;
+    if (!lastFetch) {
+      return true;
+    }
+    const currentTimestamp = new Date().getTime();
+    return (currentTimestamp - lastFetch) / 1000 > 300;
   }
 };
