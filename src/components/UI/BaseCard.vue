@@ -7,6 +7,7 @@
 <script>
 export default {
   name: 'BaseCard',
+  props: ['showAlert'],
 };
 </script>
 
@@ -17,5 +18,13 @@ export default {
   padding: 1rem;
   margin: 2rem auto;
   max-width: 40rem;
+}
+
+.alert {
+  outline: 0.2rem solid rgb(250, 82, 110);
+}
+
+.normal {
+  outline: none;
 }
 </style>

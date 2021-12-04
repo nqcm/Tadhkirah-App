@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="single-rec-card">
     <edit-record
       :key="id"
       :show="editDialogOpen"
@@ -7,8 +7,8 @@
       @close="closeDialog"
     ></edit-record>
 
-    <base-card>
-      <header class="single-rec-header" :class="isOverdue ? 'alert' : 'normal'">
+    <base-card :class="isOverdue ? 'alert' : 'normal'">
+      <header class="single-rec-header">
         <h2>{{ rec.name }}</h2>
 
         <base-badge :level="rec.level"></base-badge>
@@ -16,12 +16,12 @@
       <p>{{ rec.description }}</p>
       <nav class="single-rec-nav">
         <base-button @click="openDialog">Edit</base-button>
-        <base-button v-if="isTodaysRec || isOverdue" @click="markDone"
-          >Done</base-button
-        >
-        <base-button v-if="isTodaysRec || isOverdue" @click="makeLevelOne"
-          >Back to level 1</base-button
-        >
+        <base-button v-if="isTodaysRec || isOverdue" @click="markDone">{{
+          doneButtonText
+        }}</base-button>
+        <base-button v-if="isTodaysRec || isOverdue" @click="makeLevelOne">{{
+          levelOneButtonText
+        }}</base-button>
       </nav>
     </base-card>
   </div>
@@ -41,6 +41,8 @@ export default {
   props: ['id'],
   data() {
     return {
+      isDoneSaving: false,
+      isLevelOneSaving: false,
       editDialogOpen: false,
       rec: {},
     };
@@ -63,6 +65,12 @@ export default {
         return false;
       }
     },
+    doneButtonText() {
+      return this.isDoneSaving ? 'Saving...' : 'Done';
+    },
+    levelOneButtonText() {
+      return this.isLevelOneSaving ? 'Saving...' : 'Back to Level 1';
+    },
   },
 
   methods: {
@@ -73,11 +81,18 @@ export default {
       this.editDialogOpen = false;
       this.rec = this.$store.getters.records.find((r) => r.id === this.id);
     },
-    makeLevelOne() {
-      this.$store.dispatch('makeLevelOne', this.rec.id);
+    async makeLevelOne() {
+      this.isLevelOneSaving = true;
+
+      await this.$store.dispatch('makeLevelOne', this.rec.id);
+      this.rec = this.$store.getters.records.find((r) => r.id === this.id);
+      this.isLevelOneSaving = false;
     },
-    markDone() {
-      this.$store.dispatch('markRecDone', this.rec.id);
+    async markDone() {
+      this.isDoneSaving = true;
+      await this.$store.dispatch('markRecDone', this.rec.id);
+      this.rec = this.$store.getters.records.find((r) => r.id === this.id);
+      this.isDoneSaving = false;
     },
   },
 };
@@ -113,13 +128,5 @@ export default {
 .dialog-enter-from,
 .dialog-leave-to {
   opacity: 0;
-}
-
-.normal {
-  background-color: blueviolet;
-}
-
-.alert {
-  background-color: brown;
 }
 </style>
