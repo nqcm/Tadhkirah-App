@@ -42,7 +42,6 @@ export default {
   created() {
     this.loadRecords();
   },
-
   computed: {
     filteredRecords() {
       return this.$store.getters.records;

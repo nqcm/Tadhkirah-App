@@ -4,6 +4,7 @@
       <h1>Tadhkirah</h1>
       <ul>
         <li>
+          <span>{{ email }}</span>
           <span @click="$emit('logout')">Logout</span>
         </li>
       </ul>
@@ -15,6 +16,7 @@
 export default {
   name: 'TheHeader',
   emits: ['logout'],
+  props: ['email'],
 };
 </script>
 

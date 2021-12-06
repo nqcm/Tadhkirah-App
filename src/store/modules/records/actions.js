@@ -18,11 +18,10 @@ const now = DateTime.now()
 
 export default {
   async loadRecords(context) {
-    if (!context.getters.shouldUpdate) {
-      return;
-    }
+    // if (!context.getters.shouldUpdate) {
+    //   return;
+    // }
     const userId = context.rootGetters.userId;
-
     const db = getFirestore();
     const querySnapshot = await getDocs(
       collection(db, `users/${userId}/records`)

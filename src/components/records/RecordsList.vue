@@ -12,6 +12,8 @@
 </template>
 
 <script>
+// import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
 import AddRecordButton from './AddRecordButton.vue';
 
 import RecordFilter from './RecordFilter.vue';
@@ -30,7 +32,13 @@ export default {
       selectedTab: 'all-records',
     };
   },
-
+  // mounted() {
+  //   onAuthStateChanged(getAuth(), (user) => {
+  //     if (user) {
+  //       this.$store.dispatch('setUser', user.uid);
+  //     }
+  //   });
+  // },
   methods: {
     filterRecords(selection) {
       this.selectedTab = selection;

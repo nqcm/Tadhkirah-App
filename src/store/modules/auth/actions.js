@@ -14,9 +14,8 @@ export default {
       const result = await signInWithPopup(auth, provider);
       if (result) {
         const user = result.user;
-        context.commit('setUser', {
-          userId: user.uid
-        });
+        context.commit('setUser', user.uid);
+        context.dispatch('loadRecords');
       }
     } catch (err) {
       const error = new Error(err.message || 'Failed to authenticate');
@@ -24,9 +23,7 @@ export default {
     }
   },
   setUser(context, userId) {
-    context.commit('setUser', {
-      userId: userId
-    });
+    context.commit('setUser', userId);
   },
   async logout(context) {
     try {

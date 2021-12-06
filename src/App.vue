@@ -1,6 +1,6 @@
 <template>
   <div>
-    <the-header @logout="logout"></the-header>
+    <the-header :email="email" @logout="logout"></the-header>
 
     <!-- <records-list></records-list> -->
     <router-view></router-view>
@@ -16,13 +16,21 @@ export default {
   components: {
     TheHeader,
   },
+  data() {
+    return {
+      email: '',
+    };
+  },
   mounted() {
     onAuthStateChanged(getAuth(), (user) => {
       if (user) {
         this.$store.dispatch('setUser', user.uid);
+        console.log(user.email);
+        this.email = user.email;
       }
     });
   },
+
   methods: {
     async logout() {
       try {
