@@ -1,22 +1,37 @@
 <template>
   <div>
-    <the-header></the-header>
-    <add-record-button></add-record-button>
+    <the-header @logout="logout"></the-header>
+
     <!-- <records-list></records-list> -->
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import TheHeader from './components/layout/TheHeader.vue';
-import AddRecordButton from './components/records/AddRecordButton.vue';
-// import RecordsList from './components/records/RecordsList.vue';
 
 export default {
   name: 'App',
   components: {
     TheHeader,
-    AddRecordButton,
+  },
+  mounted() {
+    onAuthStateChanged(getAuth(), (user) => {
+      if (user) {
+        this.$store.dispatch('setUser', user.uid);
+      }
+    });
+  },
+  methods: {
+    async logout() {
+      try {
+        await this.$store.dispatch('logout');
+        this.$router.replace('/login');
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>

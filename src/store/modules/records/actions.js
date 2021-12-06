@@ -22,6 +22,7 @@ export default {
       return;
     }
     const userId = context.rootGetters.userId;
+
     const db = getFirestore();
     const querySnapshot = await getDocs(
       collection(db, `users/${userId}/records`)

@@ -4,12 +4,19 @@
       <h1>Tadhkirah</h1>
       <ul>
         <li>
-          <a href="#"><h3>Logout</h3></a>
+          <span @click="$emit('logout')">Logout</span>
         </li>
       </ul>
     </nav>
   </header>
 </template>
+
+<script>
+export default {
+  name: 'TheHeader',
+  emits: ['logout'],
+};
+</script>
 
 <style scoped>
 header {

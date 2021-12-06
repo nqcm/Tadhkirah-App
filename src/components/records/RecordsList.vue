@@ -1,5 +1,6 @@
 <template>
   <section>
+    <add-record-button></add-record-button>
     <record-filter @filter="filterRecords"></record-filter>
     <transition name="list">
       <component :is="selectedTab"></component>
@@ -11,6 +12,8 @@
 </template>
 
 <script>
+import AddRecordButton from './AddRecordButton.vue';
+
 import RecordFilter from './RecordFilter.vue';
 import AllRecords from './AllRecords.vue';
 import DueRecords from './DueRecords.vue';
@@ -20,12 +23,14 @@ export default {
     RecordFilter,
     AllRecords,
     DueRecords,
+    AddRecordButton,
   },
   data() {
     return {
       selectedTab: 'all-records',
     };
   },
+
   methods: {
     filterRecords(selection) {
       this.selectedTab = selection;
