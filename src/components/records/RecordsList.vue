@@ -32,13 +32,6 @@ export default {
       selectedTab: 'all-records',
     };
   },
-  // mounted() {
-  //   onAuthStateChanged(getAuth(), (user) => {
-  //     if (user) {
-  //       this.$store.dispatch('setUser', user.uid);
-  //     }
-  //   });
-  // },
   methods: {
     filterRecords(selection) {
       this.selectedTab = selection;

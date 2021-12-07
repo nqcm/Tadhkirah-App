@@ -1,9 +1,10 @@
 import { DateTime } from 'luxon';
-// import { db } from '@/main';
+
 import {
   getFirestore,
   collection,
   doc,
+  getDoc,
   getDocs,
   addDoc,
   setDoc,
@@ -17,14 +18,28 @@ const now = DateTime.now()
   .split('T')[0];
 
 export default {
-  async loadRecords(context) {
-    // if (!context.getters.shouldUpdate) {
-    //   return;
-    // }
+  async addUserToDB(_, user) {
+    const db = getFirestore();
+    const docRef = doc(db, 'users', user.uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return;
+    } else {
+      await setDoc(docRef, {
+        id: user.uid,
+        name: user.displayName,
+        email: user.email
+      });
+    }
+  },
+  async loadRecords(context, bypassCache = false) {
+    if (!bypassCache && !context.getters.shouldUpdate) {
+      return;
+    }
     const userId = context.rootGetters.userId;
     const db = getFirestore();
     const querySnapshot = await getDocs(
-      collection(db, `users/${userId}/records`)
+      collection(db, 'users', userId, 'records')
     );
     const records = [];
     querySnapshot.forEach(doc => {
@@ -42,32 +57,7 @@ export default {
       };
       records.push(record);
     });
-    // console.log(records1);
 
-    // const response = await fetch(
-    //   `https://tadhkirah-13575-default-rtdb.firebaseio.com/records/${userId}.json`
-    // );
-    // const responseData = await response.json();
-    // if (!response.ok) {
-    //   const error = new Error(responseData.message || 'Failed to fetch!');
-    //   throw error;
-    // }
-    // const records = [];
-    // for (const key in responseData) {
-    //   const record = {
-    //     id: key,
-    //     name: responseData[key].name,
-    //     level: responseData[key].level,
-    //     description: responseData[key].description,
-    //     revDate: responseData[key].revDate,
-    //     doneDate: responseData[key].doneDate,
-    //     dueDate: responseData[key].dueDate,
-    //     counter: responseData[key].counter,
-    //     dateAdded: responseData[key].dateAdded
-    //   };
-    //   console.log(records);
-    //   records.push(record);
-    // }
     context.commit('loadRecords', records);
     context.commit('setFetchTimestamp');
   },
@@ -87,21 +77,9 @@ export default {
       dateAdded: now
     };
     const docRef = await addDoc(
-      collection(db, `users/${userId}/records`),
+      collection(db, 'users', userId, 'records'),
       recordData
     );
-    // const response = await fetch(
-    //   `https://tadhkirah-13575-default-rtdb.firebaseio.com/records/${userId}.json`,
-    //   {
-    //     method: 'POST',
-    //     body: JSON.stringify(recordData)
-    //   }
-    // );
-    // const responseData = await response.json();
-    // if (!response.ok) {
-    //   const error = new Error(responseData.message || 'Something went wrong!');
-    //   throw error;
-    // }
     context.commit('addRecord', {
       ...recordData,
       id: docRef.id
@@ -183,10 +161,8 @@ export default {
   async deleteRecord(context, id) {
     const userId = context.rootGetters.userId;
     const db = getFirestore();
-
     const docRef = doc(db, `users/${userId}/records`, id);
     await deleteDoc(docRef);
-
     context.commit('deleteRecord', id);
   }
 };

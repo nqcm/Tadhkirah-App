@@ -12,10 +12,12 @@ export default {
     // return signInWithRedirect(auth, provider);
     try {
       const result = await signInWithPopup(auth, provider);
+      const bypassCache = true;
       if (result) {
         const user = result.user;
+        await context.dispatch('addUserToDB', user);
         context.commit('setUser', user.uid);
-        context.dispatch('loadRecords');
+        await context.dispatch('loadRecords', bypassCache);
       }
     } catch (err) {
       const error = new Error(err.message || 'Failed to authenticate');

@@ -25,7 +25,6 @@ export default {
     onAuthStateChanged(getAuth(), (user) => {
       if (user) {
         this.$store.dispatch('setUser', user.uid);
-        console.log(user.email);
         this.email = user.email;
       }
     });
