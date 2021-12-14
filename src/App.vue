@@ -8,7 +8,8 @@
 </template>
 
 <script>
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase';
 import TheHeader from './components/layout/TheHeader.vue';
 
 export default {
@@ -22,7 +23,7 @@ export default {
     };
   },
   mounted() {
-    onAuthStateChanged(getAuth(), (user) => {
+    onAuthStateChanged(auth, (user) => {
       if (user) {
         this.$store.dispatch('setUser', user.uid);
         this.email = user.email;
@@ -32,6 +33,7 @@ export default {
 
   methods: {
     async logout() {
+      this.email = '';
       try {
         await this.$store.dispatch('logout');
         this.$router.replace('/login');

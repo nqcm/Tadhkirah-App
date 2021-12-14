@@ -12,8 +12,6 @@
 </template>
 
 <script>
-// import { getAuth, onAuthStateChanged } from 'firebase/auth';
-
 import AddRecordButton from './AddRecordButton.vue';
 
 import RecordFilter from './RecordFilter.vue';

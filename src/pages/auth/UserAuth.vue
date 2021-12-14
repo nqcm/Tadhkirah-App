@@ -6,6 +6,8 @@
       </template>
     </base-modal>
     <base-button @click="login"><h3>Sign in with Google</h3> </base-button>
+    <div class="spinner-bg" v-if="isLogginIn"></div>
+    <base-spinner v-if="isLogginIn"></base-spinner>
   </div>
 </template>
 
@@ -14,19 +16,24 @@ export default {
   data() {
     return {
       error: null,
+      isLogginIn: false,
     };
   },
 
   methods: {
     async login() {
       try {
+        this.isLogginIn = true;
         await this.$store.dispatch('login');
+        this.isLogginIn = false;
         this.$router.replace('/');
       } catch (err) {
         this.error = err.message;
       }
     },
     close() {
+      this.isLogginIn = false;
+
       this.error = null;
     },
   },
@@ -46,5 +53,15 @@ export default {
 .container {
   width: 80%;
   margin: 5rem auto;
+}
+
+.spinner-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 </style>
