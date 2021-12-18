@@ -1,21 +1,32 @@
 <template>
-  <base-card>
-    <base-button @click="selectAll">All</base-button>
-    <base-button @click="selectToday">Today's Revision</base-button>
-  </base-card>
+  <div>
+    <base-button :mode="todaysButtonClass" @click="selectToday"
+      >Today's Revision</base-button
+    >
+    <base-button :mode="allButtonClass" @click="selectAll">All</base-button>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'RecordFilter',
+  props: ['selection'],
   emits: ['filter'],
-  methods: {
-    selectAll() {
-      this.$emit('filter', 'all-records');
+  computed: {
+    todaysButtonClass() {
+      return this.selection == 'due-records' ? 'active' : ''
     },
-    selectToday() {
-      this.$emit('filter', 'due-records');
+    allButtonClass() {
+      return this.selection == 'all-records' ? 'active' : ''
     },
   },
-};
+  methods: {
+    selectAll() {
+      this.$emit('filter', 'all-records')
+    },
+    selectToday() {
+      this.$emit('filter', 'due-records')
+    },
+  },
+}
 </script>

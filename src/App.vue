@@ -3,7 +3,7 @@
     <the-header :email="email" @logout="logout"></the-header>
 
     <!-- <records-list></records-list> -->
-    <!-- <router-view></router-view> -->
+    <router-view></router-view>
   </div>
 </template>
 

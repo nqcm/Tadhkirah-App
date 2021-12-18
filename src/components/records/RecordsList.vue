@@ -1,10 +1,18 @@
 <template>
   <section>
-    <add-record-button></add-record-button>
-    <record-filter @filter="filterRecords"></record-filter>
+    <div class="btn-container">
+      <!-- <add-record-button></add-record-button> -->
+      <record-filter
+        :selection="selectedTab"
+        @filter="filterRecords"
+      ></record-filter>
+      <add-record-button @click="openDialog"></add-record-button>
+    </div>
     <transition name="list">
       <component :is="selectedTab"></component>
     </transition>
+
+    <add-record v-if="dialogOpen" @close="closeDialog"></add-record>
 
     <!-- <all-records v-if="selectedTab === 'all'"></all-records>
     <todays-records v-if="selectedTab === 'today'"></todays-records> -->
@@ -12,11 +20,12 @@
 </template>
 
 <script>
-import AddRecordButton from './AddRecordButton.vue';
+import AddRecordButton from './AddRecordButton.vue'
+import AddRecord from './AddRecord.vue'
 
-import RecordFilter from './RecordFilter.vue';
-import AllRecords from './AllRecords.vue';
-import DueRecords from './DueRecords.vue';
+import RecordFilter from './RecordFilter.vue'
+import AllRecords from './AllRecords.vue'
+import DueRecords from './DueRecords.vue'
 export default {
   name: 'RecordsList',
   components: {
@@ -24,27 +33,38 @@ export default {
     AllRecords,
     DueRecords,
     AddRecordButton,
+    AddRecord,
   },
   data() {
     return {
-      selectedTab: 'all-records',
-    };
+      selectedTab: 'due-records',
+      dialogOpen: false,
+    }
   },
   methods: {
     filterRecords(selection) {
-      this.selectedTab = selection;
+      this.selectedTab = selection
+    },
+    openDialog() {
+      this.dialogOpen = true
+    },
+    closeDialog() {
+      this.dialogOpen = false
     },
   },
-};
+}
 </script>
 
 <style scoped>
-section {
+.btn-container {
+  @apply sm:w-10/12 xl:w-9/12 my-10 sm:my-14 lg:my-16 mx-2 sm:mx-auto flex justify-between items-center;
+}
+/* section {
   margin-top: 10rem;
   padding: 0;
   margin: auto;
   max-width: 40rem;
-}
+} */
 
 .list-enter-from {
   opacity: 0;

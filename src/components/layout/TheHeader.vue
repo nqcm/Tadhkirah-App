@@ -60,11 +60,11 @@ li {
 }
 
 .logo-image {
-  @apply w-60 sm:w-72 xl:w-96;
+  @apply w-60 sm:w-72 xl:w-80;
 }
 
 .logo-text {
-  @apply w-40;
+  @apply w-40 lg:w-48 xl:w-60 mt-3;
 }
 /* header {
   width: 100%;
