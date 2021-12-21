@@ -1,9 +1,13 @@
 <template>
-  <div>
-    <base-button :mode="todaysButtonClass" @click="selectToday"
-      >Today's Revision</base-button
-    >
-    <base-button :mode="allButtonClass" @click="selectAll">All</base-button>
+  <div class="main-div">
+    <div class="btn-container">
+      <button :class="todaysButtonClass" @click="selectToday">
+        Today's Revision
+      </button>
+    </div>
+    <div class="btn-container">
+      <button :class="allButtonClass" @click="selectAll">All</button>
+    </div>
   </div>
 </template>
 
@@ -30,3 +34,22 @@ export default {
   },
 }
 </script>
+
+
+<style scoped>
+.main-div {
+  @apply flex;
+}
+
+.btn-container {
+  @apply py-0.5 sm:pt-2 md:pt-3 lg:pt-4 px-2 sm:pr-4 lg:pr-6;
+}
+
+button {
+  @apply sm:text-lg md:text-2xl xl:text-3xl text-gold cursor-pointer;
+}
+
+.active {
+  @apply border-b-4 xl:border-b-8;
+}
+</style>

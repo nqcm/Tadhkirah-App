@@ -21,7 +21,8 @@ export default {
 } */
 
 .alert {
-  outline: 0.2rem solid rgb(250, 82, 110);
+  /* outline: 0.2rem solid rgb(250, 82, 110); */
+  outline: none;
 }
 
 .normal {

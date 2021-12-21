@@ -11,7 +11,7 @@
           <li>
             {{ email }}
           </li>
-          <li @click="$emit('logout')">Logout</li>
+          <li class="logout" @click="$emit('logout')">Logout</li>
         </ul>
       </div>
     </nav>
@@ -40,7 +40,7 @@ header {
 }
 
 header nav {
-  @apply w-full sm:w-10/12 py-10 xl:py-14 flex justify-around sm:justify-between items-center;
+  @apply w-full sm:w-10/12 2xl:max-w-screen-2xl mx-auto py-10 xl:py-14 flex justify-around sm:justify-between items-center;
 }
 
 .back-arrow {
@@ -53,6 +53,10 @@ header ul {
 
 li {
   @apply my-0 ml-4 sm:ml-10 text-gold text-xs sm:text-base xl:text-xl;
+}
+
+.logout {
+  @apply cursor-pointer;
 }
 
 .logo {

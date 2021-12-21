@@ -1,47 +1,73 @@
 <template>
+  <the-header :email="email" @logout="logout"></the-header>
+
   <section>
-    <div class="btn-container">
-      <!-- <add-record-button></add-record-button> -->
+    <div class="nav">
       <record-filter
         :selection="selectedTab"
         @filter="filterRecords"
       ></record-filter>
       <add-record-button @click="openDialog"></add-record-button>
     </div>
+
     <transition name="list">
       <component :is="selectedTab"></component>
     </transition>
 
     <add-record v-if="dialogOpen" @close="closeDialog"></add-record>
-
-    <!-- <all-records v-if="selectedTab === 'all'"></all-records>
-    <todays-records v-if="selectedTab === 'today'"></todays-records> -->
   </section>
 </template>
 
 <script>
-import AddRecordButton from './AddRecordButton.vue'
-import AddRecord from './AddRecord.vue'
+import { onAuthStateChanged } from 'firebase/auth'
+import { auth } from '../firebase'
 
-import RecordFilter from './RecordFilter.vue'
-import AllRecords from './AllRecords.vue'
-import DueRecords from './DueRecords.vue'
+import TheHeader from '../components/layout/TheHeader.vue'
+
+import RecordFilter from '../components/records/RecordFilter.vue'
+import AddRecordButton from '../components/records/AddRecordButton.vue'
+import AllRecords from '../components/records/AllRecords.vue'
+import DueRecords from '../components/records/DueRecords.vue'
+import AddRecord from '../components/records/AddRecord.vue'
+
 export default {
-  name: 'RecordsList',
+  name: 'Home',
   components: {
+    TheHeader,
     RecordFilter,
+    AddRecordButton,
     AllRecords,
     DueRecords,
-    AddRecordButton,
     AddRecord,
   },
+
   data() {
     return {
       selectedTab: 'due-records',
       dialogOpen: false,
+      email: '',
     }
   },
+
+  mounted() {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        this.$store.dispatch('setUser', user.uid)
+        this.email = user.email
+      }
+    })
+  },
+
   methods: {
+    async logout() {
+      this.email = ''
+      try {
+        await this.$store.dispatch('logout')
+        this.$router.replace('/login')
+      } catch (error) {
+        console.log(error)
+      }
+    },
     filterRecords(selection) {
       this.selectedTab = selection
     },
@@ -56,15 +82,9 @@ export default {
 </script>
 
 <style scoped>
-.btn-container {
-  @apply sm:w-10/12 xl:w-9/12 my-10 sm:my-14 lg:my-16 mx-2 sm:mx-auto flex justify-between items-center;
+.nav {
+  @apply w-11/12 lg:w-10/12 2xl:max-w-screen-2xl mt-10 sm:mt-14 lg:mt-16 mx-auto flex justify-between items-center;
 }
-/* section {
-  margin-top: 10rem;
-  padding: 0;
-  margin: auto;
-  max-width: 40rem;
-} */
 
 .list-enter-from {
   opacity: 0;
