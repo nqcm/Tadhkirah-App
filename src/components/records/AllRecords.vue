@@ -13,7 +13,8 @@
         </all-records-single-card>
       </div>
 
-      <h3 v-else>No records found</h3>
+      <empty v-else text="No records found!"></empty>
+      <!-- <h3 v-else>No records found</h3> -->
     </div>
 
     <teleport to="#dialog">
@@ -30,10 +31,12 @@
 
 <script>
 import AllRecordsSingleCard from './AllRecordsSingleCard.vue'
+import Empty from './Empty.vue'
 export default {
   name: 'AllRecords',
   components: {
     AllRecordsSingleCard,
+    Empty,
   },
   data() {
     return {
@@ -70,6 +73,7 @@ export default {
 .container {
   @apply bg-grey-dark
             w-11/12 lg:w-10/12
+            h-screen
             mx-auto
             md:mt-2
             pt-2
@@ -80,7 +84,7 @@ export default {
 .card-container {
   @apply mx-2
           grid
-          grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
+          grid-cols-1 md:grid-cols-2 xl:grid-cols-3
           gap-x-2 lg:gap-x-3
           gap-y-0 lg:gap-y-3;
 }

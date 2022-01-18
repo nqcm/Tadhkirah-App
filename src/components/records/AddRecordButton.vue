@@ -12,6 +12,6 @@ export default {
 
 <style scoped>
 .plus {
-  @apply w-9 sm:w-10 md:w-11 lg:w-12 px-2 cursor-pointer;
+  @apply w-9 sm:w-10 md:w-11 xl:w-12 px-2 cursor-pointer;
 }
 </style>

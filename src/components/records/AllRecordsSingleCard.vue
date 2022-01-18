@@ -79,11 +79,17 @@ export default {
 }
 
 h2 {
-  @apply text-white font-semibold text-lg;
+  @apply text-white
+            font-semibold
+            text-lg md:text-xl 2xl:text-2xl;
 }
 
 p {
-  @apply text-white font-light text-xs lg:text-sm italic mt-1;
+  @apply text-white
+            font-light
+            text-xs md:text-sm 2xl:text-base
+            italic
+            mt-1;
 }
 
 .btn {
