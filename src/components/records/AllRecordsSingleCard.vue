@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <article>
     <edit-record
       :key="id"
       :show="editDialogOpen"
       :id="id"
       @close="closeDialog"
     ></edit-record>
-    <article class="rec-box">
+    <div class="rec-box">
       <div class="badge">
         <base-badge :level="rec.level"></base-badge>
       </div>
@@ -17,8 +17,8 @@
       <div class="btn">
         <base-button @click="openDialog">Edit</base-button>
       </div>
-    </article>
-  </div>
+    </div>
+  </article>
 </template>
 
 

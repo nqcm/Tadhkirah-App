@@ -1,5 +1,5 @@
 <template>
-  <div class="single-rec-card">
+  <article class="single-rec-card">
     <edit-record
       :key="id"
       :show="editDialogOpen"
@@ -8,22 +8,33 @@
     ></edit-record>
 
     <base-card :class="isOverdue ? 'alert' : 'normal'">
-      <base-badge :level="rec.level"></base-badge>
-      <header class="single-rec-header">
-        <h2>{{ rec.name }}</h2>
+      <header class="badge">
+        <base-badge :level="rec.level"></base-badge>
       </header>
-      <p>{{ rec.description }}</p>
-      <nav class="single-rec-nav">
-        <base-button @click="openDialog">Edit</base-button>
-        <base-button v-if="isTodaysRec || isOverdue" @click="markDone">{{
+
+      <div class="text" @click="openDialog">
+        <h2>{{ rec.name }}</h2>
+        <p>{{ rec.description }}</p>
+      </div>
+
+      <div class="small-text">
+        <p><span class="italic">Total Revisions</span> {{ rec.counter }}</p>
+        <hr />
+      </div>
+
+      <div class="nav">
+        <!-- <base-button @click="openDialog">Edit</base-button> -->
+        <base-check-button @click="markDone"></base-check-button>
+        <base-redo-button @click="makeLevelOne"></base-redo-button>
+        <!-- <base-button v-if="isTodaysRec || isOverdue" @click="markDone">{{
           doneButtonText
         }}</base-button>
         <base-button v-if="isTodaysRec || isOverdue" @click="makeLevelOne">{{
           levelOneButtonText
-        }}</base-button>
-      </nav>
+        }}</base-button> -->
+      </div>
     </base-card>
-  </div>
+  </article>
 </template>
 
 
@@ -31,11 +42,15 @@
 import { DateTime } from 'luxon'
 
 import EditRecord from './EditRecord.vue'
+import BaseCheckButton from '../UI/BaseCheckButton.vue'
+import BaseRedoButton from '../UI/BaseRedoButton.vue'
 
 export default {
   name: 'SingleRecordCard',
   components: {
     EditRecord,
+    BaseCheckButton,
+    BaseRedoButton,
   },
   props: ['id'],
   data() {
@@ -117,6 +132,10 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+
+.text {
+  @apply cursor-pointer;
 }
 
 .dialog-enter-active,
