@@ -43,7 +43,7 @@ export default {
 
   data() {
     return {
-      selectedTab: 'due-records',
+      selectedTab: 'all-records',
       dialogOpen: false,
       email: '',
     }

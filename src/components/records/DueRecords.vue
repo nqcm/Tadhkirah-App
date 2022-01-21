@@ -59,6 +59,6 @@ export default {
             md:mt-2
             pt-2
             pb-2
-            rounded-xl;
+            md:rounded-xl;
 }
 </style>

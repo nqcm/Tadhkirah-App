@@ -1,7 +1,7 @@
 <template>
-  <div class="card">
+  <article class="card">
     <slot></slot>
-  </div>
+  </article>
 </template>
 
 <script>
@@ -12,17 +12,21 @@ export default {
 </script>
 
 <style scoped>
-/* .card {
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  padding: 1rem;
-  margin: 2rem auto;
-  max-width: 40rem;
-} */
+.card {
+  @apply bg-grey-cards
+         rounded-2xl
+         max-w-xs
+         h-96
+         m-auto
+         my-4
+         p-4
+         shadow-md;
+}
 
 .alert {
   /* outline: 0.2rem solid rgb(250, 82, 110); */
-  outline: none;
+  /* outline: none; */
+  @apply shadow-xl;
 }
 
 .normal {

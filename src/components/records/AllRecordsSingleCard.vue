@@ -60,14 +60,10 @@ export default {
         flex
         justify-between
         items-center
-        mx-auto
-        sm:mx-2
-        md:mx-0
-        mb-2
-        md:pl-2
+        mx-auto sm:mx-2 md:mx-0
+        mb-2 md:pl-2
         py-4
-        rounded-md
-        md:rounded-lg;
+        rounded-md md:rounded-lg;
 }
 
 .badge {
