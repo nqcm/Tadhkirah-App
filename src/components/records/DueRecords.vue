@@ -9,12 +9,9 @@
         >
         </single-record-card>
       </div>
-      <!-- <div v-else class="empty-image">
-        <img :src="require('@/assets/images/empty.png')" alt="" />
-        <h3>You are all caught up!</h3>
-      </div> -->
+
       <empty v-else-if="hasRecords" text="You are all caught up!"></empty>
-      <empty v-else text="No records found!"></empty>
+      <empty v-else text="You don't have any records!"></empty>
     </div>
 
     <div>

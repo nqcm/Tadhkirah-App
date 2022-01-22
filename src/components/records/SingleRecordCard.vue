@@ -66,10 +66,10 @@ export default {
   },
 
   computed: {
-    isTodaysRec() {
-      const today = DateTime.now().toISO().split('T')[0]
-      return this.rec.dueDate === today ? true : false
-    },
+    // isTodaysRec() {
+    //   const today = DateTime.now().toISO().split('T')[0]
+    //   return this.rec.dueDate === today ? true : false
+    // },
     isOverdue() {
       const today = DateTime.now()
       const date = DateTime.fromISO(this.rec.dueDate)

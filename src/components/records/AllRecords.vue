@@ -62,6 +62,7 @@ export default {
         await this.$store.dispatch('loadRecords')
       } catch (error) {
         this.error = error.message || 'Something went wrong'
+        console.log(error)
       }
       this.isLoading = false
     },

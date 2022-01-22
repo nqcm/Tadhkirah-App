@@ -15,14 +15,14 @@
 //       email: '',
 //     }
 //   },
-//   mounted() {
-//     onAuthStateChanged(auth, (user) => {
-//       if (user) {
-//         this.$store.dispatch('setUser', user.uid)
-//         this.email = user.email
-//       }
-//     })
-//   },
+// mounted() {
+//   onAuthStateChanged(auth, (user) => {
+//     if (user) {
+//       this.$store.dispatch('setUser', user.uid)
+//       this.email = user.email
+//     }
+//   })
+// },
 
 //   methods: {
 //     async logout() {

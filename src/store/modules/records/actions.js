@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { DateTime } from 'luxon'
 
 import {
   getFirestore,
@@ -9,41 +9,41 @@ import {
   addDoc,
   setDoc,
   deleteDoc
-} from 'firebase/firestore/lite';
+} from 'firebase/firestore/lite'
 
-import calculateDueDate from '../../../utilities/calculateDueDate';
+import calculateDueDate from '../../../utilities/calculateDueDate'
 
 const now = DateTime.now()
   .toISO()
-  .split('T')[0];
+  .split('T')[0]
 
 export default {
   async addUserToDB(_, user) {
-    const db = getFirestore();
-    const docRef = doc(db, 'users', user.uid);
-    const docSnap = await getDoc(docRef);
+    const db = getFirestore()
+    const docRef = doc(db, 'users', user.uid)
+    const docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
-      return;
+      return
     } else {
       await setDoc(docRef, {
         id: user.uid,
         name: user.displayName,
         email: user.email
-      });
+      })
     }
   },
-  async loadRecords(context, bypassCache = false) {
-    if (!bypassCache && !context.getters.shouldUpdate) {
-      return;
-    }
-    const userId = context.rootGetters.userId;
-    const db = getFirestore();
+  async loadRecords(context) {
+    // if (!bypassCache && !context.getters.shouldUpdate) {
+    //   return
+    // }
+    const userId = context.rootGetters.userId
+    const db = getFirestore()
     const querySnapshot = await getDocs(
       collection(db, 'users', userId, 'records')
-    );
-    const records = [];
+    )
+    const records = []
     querySnapshot.forEach(doc => {
-      const data = doc.data();
+      const data = doc.data()
       const record = {
         id: doc.id,
         name: data.name,
@@ -54,17 +54,17 @@ export default {
         dueDate: data.dueDate,
         counter: data.counter,
         dateAdded: data.dateAdded
-      };
-      records.push(record);
-    });
+      }
+      records.push(record)
+    })
 
-    context.commit('loadRecords', records);
-    context.commit('setFetchTimestamp');
+    context.commit('loadRecords', records)
+    // context.commit('setFetchTimestamp')
   },
   async addRecord(context, data) {
-    const dueDate = calculateDueDate(data.level, now);
-    const userId = context.rootGetters.userId;
-    const db = getFirestore();
+    const dueDate = calculateDueDate(data.level, now)
+    const userId = context.rootGetters.userId
+    const db = getFirestore()
 
     const recordData = {
       name: data.name,
@@ -75,21 +75,21 @@ export default {
       dueDate: dueDate,
       counter: 0,
       dateAdded: now
-    };
+    }
     const docRef = await addDoc(
       collection(db, 'users', userId, 'records'),
       recordData
-    );
+    )
     context.commit('addRecord', {
       ...recordData,
       id: docRef.id
-    });
+    })
   },
   async editRecord(context, data) {
-    const dueDate = calculateDueDate(data.level, data.revDate);
-    const userId = context.rootGetters.userId;
-    const recId = data.id;
-    const db = getFirestore();
+    const dueDate = calculateDueDate(data.level, data.revDate)
+    const userId = context.rootGetters.userId
+    const recId = data.id
+    const db = getFirestore()
 
     const recordData = {
       name: data.name,
@@ -100,20 +100,20 @@ export default {
       dueDate: dueDate,
       counter: data.counter,
       dateAdded: data.dateAdded
-    };
+    }
 
-    const docRef = doc(db, `users/${userId}/records`, recId);
-    await setDoc(docRef, recordData, { merge: true });
+    const docRef = doc(db, `users/${userId}/records`, recId)
+    await setDoc(docRef, recordData, { merge: true })
     context.commit('editRecord', {
       ...recordData,
       id: data.id
-    });
+    })
   },
   async makeLevelOne(context, id) {
-    const userId = context.rootGetters.userId;
-    const rec = context.getters.records.find(r => r.id === id);
-    const dueDate = calculateDueDate(1, now);
-    const db = getFirestore();
+    const userId = context.rootGetters.userId
+    const rec = context.getters.records.find(r => r.id === id)
+    const dueDate = calculateDueDate(1, now)
+    const db = getFirestore()
 
     const recordData = {
       name: rec.name,
@@ -124,21 +124,21 @@ export default {
       dueDate: dueDate,
       counter: rec.counter + 1,
       dateAdded: rec.dateAdded
-    };
-    const docRef = doc(db, `users/${userId}/records`, id);
-    await setDoc(docRef, recordData, { merge: true });
+    }
+    const docRef = doc(db, `users/${userId}/records`, id)
+    await setDoc(docRef, recordData, { merge: true })
 
     context.commit('editRecord', {
       ...recordData,
       id: id
-    });
+    })
   },
   async markRecDone(context, id) {
-    const userId = context.rootGetters.userId;
-    const rec = context.getters.records.find(r => r.id === id);
-    const dueDate = calculateDueDate(rec.level, now);
-    const newLevel = rec.level < 5 ? rec.level + 1 : 5;
-    const db = getFirestore();
+    const userId = context.rootGetters.userId
+    const rec = context.getters.records.find(r => r.id === id)
+    const dueDate = calculateDueDate(rec.level, now)
+    const newLevel = rec.level < 5 ? rec.level + 1 : 5
+    const db = getFirestore()
 
     const recordData = {
       name: rec.name,
@@ -149,20 +149,20 @@ export default {
       dueDate: dueDate,
       counter: rec.counter + 1,
       dateAdded: rec.dateAdded
-    };
-    const docRef = doc(db, `users/${userId}/records`, id);
-    await setDoc(docRef, recordData, { merge: true });
+    }
+    const docRef = doc(db, `users/${userId}/records`, id)
+    await setDoc(docRef, recordData, { merge: true })
 
     context.commit('editRecord', {
       ...recordData,
       id: id
-    });
+    })
   },
   async deleteRecord(context, id) {
-    const userId = context.rootGetters.userId;
-    const db = getFirestore();
-    const docRef = doc(db, `users/${userId}/records`, id);
-    await deleteDoc(docRef);
-    context.commit('deleteRecord', id);
+    const userId = context.rootGetters.userId
+    const db = getFirestore()
+    const docRef = doc(db, `users/${userId}/records`, id)
+    await deleteDoc(docRef)
+    context.commit('deleteRecord', id)
   }
-};
+}

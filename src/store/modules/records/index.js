@@ -1,11 +1,10 @@
-import mutations from './mutations.js';
-import actions from './actions.js';
-import getters from './getters.js';
+import mutations from './mutations.js'
+import actions from './actions.js'
+import getters from './getters.js'
 
 export default {
   state() {
     return {
-      lastFetch: null,
       records: [
         {
           id: 123456789,
@@ -16,7 +15,8 @@ export default {
           revDate: '2021-10-25',
           dueDate: '2021-11-10',
           counter: 5,
-          dateAdded: '2021-08-05'
+          dateAdded: '2021-08-05',
+          doneDate: '2021-11-06'
         },
         {
           id: 123456788,
@@ -27,7 +27,8 @@ export default {
           revDate: '2021-10-25',
           dueDate: '2021-10-25',
           counter: 2,
-          dateAdded: '2021-10-25'
+          dateAdded: '2021-10-25',
+          doneDate: '2021-11-06'
         },
         {
           id: 123456787,
@@ -38,12 +39,13 @@ export default {
           revDate: '2021-10-02',
           dueDate: '2021-11-24',
           counter: 2,
-          dateAdded: '2021-10-25'
+          dateAdded: '2021-10-25',
+          doneDate: '2021-11-06'
         }
       ]
-    };
+    }
   },
   mutations,
   actions,
   getters
-};
+}

@@ -86,7 +86,9 @@
               </form>
             </section>
             <div class="menu">
-              <base-button @click="openDeleteWarning">Delete</base-button>
+              <base-button @click="openDeleteWarning" mode="alert"
+                >Delete</base-button
+              >
               <base-button @click="resetForm">Cancel</base-button>
             </div>
             <teleport to="#dialog">
@@ -107,9 +109,9 @@
 </template>
 
 <script>
-import { DateTime } from 'luxon';
-import DeleteWarning from './DeleteWarning.vue';
-import calculateDueDate from '../../utilities/calculateDueDate.js';
+import { DateTime } from 'luxon'
+import DeleteWarning from './DeleteWarning.vue'
+import calculateDueDate from '../../utilities/calculateDueDate.js'
 
 export default {
   name: 'EditRecord',
@@ -135,82 +137,82 @@ export default {
       userInput: {},
       showDeleteWarning: false,
       isSaving: false,
-    };
+    }
   },
   created() {
     this.selectedRecord = this.$store.getters.records.find(
       (record) => record.id === this.id
-    );
-    this.userInput = { ...this.selectedRecord };
+    )
+    this.userInput = { ...this.selectedRecord }
   },
   updated() {
     this.selectedRecord = this.$store.getters.records.find(
       (record) => record.id === this.id
-    );
-    this.userInput = { ...this.selectedRecord };
+    )
+    this.userInput = { ...this.selectedRecord }
   },
   methods: {
     clearInvalidName() {
-      this.formIsValid.nameField = true;
+      this.formIsValid.nameField = true
     },
     clearInvalidDate() {
-      this.formIsValid.dateField = true;
+      this.formIsValid.dateField = true
     },
     changeDueDate() {
       this.userInput.dueDate = calculateDueDate(
         this.userInput.level,
         this.userInput.revDate
-      );
+      )
     },
     validateName() {
-      this.formIsValid.nameField = true;
+      this.formIsValid.nameField = true
       if (this.userInput.name === '') {
-        this.formIsValid.nameField = false;
+        this.formIsValid.nameField = false
       }
     },
     validateDate() {
-      this.formIsValid.dateField = true;
-      const today = DateTime.now();
-      const inputRevDate = DateTime.fromISO(this.userInput.revDate);
-      const diff = inputRevDate.diff(today).toObject();
+      this.formIsValid.dateField = true
+      const today = DateTime.now()
+      const inputRevDate = DateTime.fromISO(this.userInput.revDate)
+      const diff = inputRevDate.diff(today).toObject()
       if (diff.milliseconds > 0) {
-        this.formIsValid.dateField = false;
+        this.formIsValid.dateField = false
       }
     },
     async submitForm() {
-      this.isSaving = true;
-      this.validateName();
+      this.isSaving = true
+      this.validateName()
       if (!this.formIsValid.nameField) {
-        return;
+        return
       }
-      this.validateDate();
+      this.validateDate()
       if (!this.formIsValid.dateField) {
-        return;
+        return
       }
-      await this.$store.dispatch('editRecord', this.userInput);
-      this.resetForm();
-      this.isSaving = false;
-      this.$emit('close');
+      await this.$store.dispatch('editRecord', this.userInput)
+      this.resetForm()
+      this.isSaving = false
+      this.$emit('close')
     },
     resetForm() {
-      this.userInput = { ...this.selectedRecord };
-      this.formIsValid.nameField = true;
-      this.formIsValid.dateField = true;
-      this.$emit('close');
+      this.userInput = { ...this.selectedRecord }
+      this.formIsValid.nameField = true
+      this.formIsValid.dateField = true
+      this.$emit('close')
     },
     openDeleteWarning() {
-      this.showDeleteWarning = true;
+      this.showDeleteWarning = true
     },
     closeDeleteWarning() {
-      this.showDeleteWarning = false;
+      this.showDeleteWarning = false
     },
     deleteEntry() {
-      this.$store.dispatch('deleteRecord', this.id);
-      this.showDeleteWarning = false;
-      this.$emit('close');
+      this.$store.dispatch('deleteRecord', this.id)
+      this.showDeleteWarning = false
+      this.$emit('close')
     },
   },
-};
+}
 </script>
 
 <style scoped>

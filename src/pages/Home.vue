@@ -11,7 +11,7 @@
     </div>
 
     <transition name="list">
-      <component :is="selectedTab"></component>
+      <component v-if="!isLoading" :is="selectedTab"></component>
     </transition>
 
     <add-record v-if="dialogOpen" @close="closeDialog"></add-record>
@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from '../firebase'
+// import { onAuthStateChanged } from 'firebase/auth'
+import { getUserState } from '../firebase'
 
 import TheHeader from '../components/layout/TheHeader.vue'
 
@@ -46,28 +46,44 @@ export default {
       selectedTab: 'all-records',
       dialogOpen: false,
       email: '',
+      isLoading: false,
     }
   },
 
   mounted() {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        this.$store.dispatch('setUser', user.uid)
-        this.email = user.email
-      }
-    })
+    this.isAuth()
+    //   (auth, (user) => {
+    //   if (user) {
+    //     this.$store.dispatch('setUser', user.uid)
+    //     this.email = user.email
+    //   } else {
+    //     this.$router.replace('/login')
+    //   }
+    // })
   },
 
   methods: {
+    async isAuth() {
+      this.isLoading = true
+      const user = await getUserState()
+      if (user) {
+        this.$store.dispatch('setUser', user.uid)
+        this.email = user.email
+        this.isLoading = false
+      } else {
+        this.$router.replace('/login')
+      }
+    },
     async logout() {
       this.email = ''
       try {
         await this.$store.dispatch('logout')
         this.$router.replace('/login')
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
     },
+
     filterRecords(selection) {
       this.selectedTab = selection
     },
