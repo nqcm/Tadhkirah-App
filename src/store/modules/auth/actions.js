@@ -1,6 +1,6 @@
 import { signInWithPopup, signOut, GoogleAuthProvider } from 'firebase/auth'
 
-import { auth } from '../../../firebase'
+import { auth } from '../../../plugins/firebase'
 
 export default {
   async login(context) {
@@ -8,7 +8,6 @@ export default {
     // return signInWithRedirect(auth, provider);
     try {
       const result = await signInWithPopup(auth, provider)
-      // const bypassCache = true;
       const user = result.user
       await context.dispatch('addUserToDB', user)
       context.commit('setUser', user.uid)
@@ -19,7 +18,6 @@ export default {
   },
   async setUser(context, userId) {
     context.commit('setUser', userId)
-    // await context.dispatch('loadRecords')
   },
   async logout(context) {
     try {

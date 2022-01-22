@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { getUserState } from './firebase'
+import { getUserState } from './plugins/firebase'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -13,7 +13,7 @@ const router = createRouter({
     {
       path: '/login',
       name: 'Login',
-      component: () => import('./pages/auth/UserAuth.vue'),
+      component: () => import('./pages/auth/LoginPage.vue'),
       meta: { requiresUnAuth: true }
     },
     {

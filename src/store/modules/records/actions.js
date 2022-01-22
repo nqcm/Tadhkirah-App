@@ -33,9 +33,6 @@ export default {
     }
   },
   async loadRecords(context) {
-    // if (!bypassCache && !context.getters.shouldUpdate) {
-    //   return
-    // }
     const userId = context.rootGetters.userId
     const db = getFirestore()
     const querySnapshot = await getDocs(
@@ -59,7 +56,6 @@ export default {
     })
 
     context.commit('loadRecords', records)
-    // context.commit('setFetchTimestamp')
   },
   async addRecord(context, data) {
     const dueDate = calculateDueDate(data.level, now)

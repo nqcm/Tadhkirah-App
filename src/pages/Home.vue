@@ -19,8 +19,7 @@
 </template>
 
 <script>
-// import { onAuthStateChanged } from 'firebase/auth'
-import { getUserState } from '../firebase'
+import { getUserState } from '../plugins/firebase'
 
 import TheHeader from '../components/layout/TheHeader.vue'
 
@@ -52,20 +51,13 @@ export default {
 
   mounted() {
     this.isAuth()
-    //   (auth, (user) => {
-    //   if (user) {
-    //     this.$store.dispatch('setUser', user.uid)
-    //     this.email = user.email
-    //   } else {
-    //     this.$router.replace('/login')
-    //   }
-    // })
   },
 
   methods: {
     async isAuth() {
       this.isLoading = true
       const user = await getUserState()
+
       if (user) {
         this.$store.dispatch('setUser', user.uid)
         this.email = user.email
