@@ -1,10 +1,7 @@
 <template>
   <div class="container">
     <div>
-      <div v-if="isLoading">
-        <base-spinner></base-spinner>
-      </div>
-      <div v-else-if="hasRecords" class="card-container">
+      <div v-if="hasRecords" class="card-container">
         <all-records-single-card
           v-for="record in filteredRecords"
           :key="record.id"
@@ -14,7 +11,6 @@
       </div>
 
       <empty v-else text="No records found!"></empty>
-      <!-- <h3 v-else>No records found</h3> -->
     </div>
 
     <teleport to="#dialog">
@@ -44,27 +40,13 @@ export default {
       error: null,
     }
   },
-  created() {
-    this.loadRecords()
-  },
+
   computed: {
     filteredRecords() {
       return this.$store.getters.records
     },
     hasRecords() {
       return this.$store.getters.hasRecords
-    },
-  },
-  methods: {
-    async loadRecords() {
-      this.isLoading = true
-      try {
-        await this.$store.dispatch('loadRecords')
-      } catch (error) {
-        this.error = error.message || 'Something went wrong'
-        console.log(error)
-      }
-      this.isLoading = false
     },
   },
 }

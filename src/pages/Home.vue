@@ -10,6 +10,10 @@
       <add-record-button @click="openDialog"></add-record-button>
     </div>
 
+    <div v-if="isLoading">
+      <base-spinner></base-spinner>
+    </div>
+
     <transition name="list">
       <component v-if="!isLoading" :is="selectedTab"></component>
     </transition>
@@ -57,14 +61,23 @@ export default {
     async isAuth() {
       this.isLoading = true
       const user = await getUserState()
-
       if (user) {
         this.$store.dispatch('setUser', user.uid)
         this.email = user.email
-        this.isLoading = false
+        this.loadRecords()
       } else {
         this.$router.replace('/login')
       }
+    },
+    async loadRecords() {
+      this.isLoading = true
+      try {
+        await this.$store.dispatch('loadRecords')
+      } catch (error) {
+        this.error = error.message || 'Something went wrong'
+        console.log(error)
+      }
+      this.isLoading = false
     },
     async logout() {
       this.email = ''
