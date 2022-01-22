@@ -4,7 +4,6 @@ import {
   getFirestore,
   collection,
   doc,
-  getDoc,
   getDocs,
   addDoc,
   setDoc,
@@ -18,20 +17,6 @@ const now = DateTime.now()
   .split('T')[0]
 
 export default {
-  async addUserToDB(_, user) {
-    const db = getFirestore()
-    const docRef = doc(db, 'users', user.uid)
-    const docSnap = await getDoc(docRef)
-    if (docSnap.exists()) {
-      return
-    } else {
-      await setDoc(docRef, {
-        id: user.uid,
-        name: user.displayName,
-        email: user.email
-      })
-    }
-  },
   async loadRecords(context) {
     const userId = context.rootGetters.userId
     const db = getFirestore()
