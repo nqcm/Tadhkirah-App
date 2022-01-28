@@ -15,7 +15,23 @@ module.exports = {
       red: '#e46b67',
       transparent: 'transparent'
     },
-    extend: {}
+    extend: {
+      spacing: {
+        '76': '19rem'
+      },
+      borderWidth: {
+        '3': '3px'
+      },
+      borderRadius: {
+        '4xl': '2rem'
+      },
+      width: {
+        cw: '314px'
+      },
+      height: {
+        ch: '423px'
+      }
+    }
   },
 
   plugins: []

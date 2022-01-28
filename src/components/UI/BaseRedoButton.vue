@@ -12,10 +12,10 @@ export default {
 
 <style scoped>
 .circle {
-  @apply m-auto 
-          w-12 md:w-16 
-          h-12 md:h-16 
-          border-4 
+  @apply mx-4
+          w-14 
+          h-14
+          border-3 
           rounded-full 
           border-red 
           flex 
@@ -26,6 +26,6 @@ export default {
 }
 
 .circle img {
-  @apply w-5 md:w-8;
+  @apply w-7;
 }
 </style>

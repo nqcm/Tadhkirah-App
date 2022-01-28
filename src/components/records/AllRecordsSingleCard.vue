@@ -67,7 +67,7 @@ export default {
 }
 
 .badge {
-  @apply w-1/5;
+  @apply w-1/5 ml-2;
 }
 
 .text {
