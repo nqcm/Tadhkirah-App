@@ -31,6 +31,7 @@
                   <label for="desc">Description (optional)</label>
                   <textarea
                     v-model.trim="userInput.description"
+                    maxlength="128"
                     class="desc"
                     id="desc"
                   >

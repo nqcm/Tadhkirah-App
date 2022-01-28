@@ -27,6 +27,7 @@
               v-model.trim="desc"
               type="text"
               placeholder="Notes or description for yourself"
+              maxlength="128"
               class="desc"
               id="desc"
             >
@@ -71,40 +72,40 @@ export default {
       desc: '',
       levelInput: '',
       formIsValid: true,
-    };
+    }
   },
 
   methods: {
     clearInvalidForm() {
-      this.formIsValid = true;
+      this.formIsValid = true
     },
     validateForm() {
-      this.formIsValid = true;
+      this.formIsValid = true
       if (this.name === '') {
-        this.formIsValid = false;
+        this.formIsValid = false
       }
     },
     fillMissingInfo() {
       if (this.levelInput === '') {
-        this.levelInput = 1;
+        this.levelInput = 1
       }
     },
     submitForm() {
-      this.validateForm();
+      this.validateForm()
       if (!this.formIsValid) {
-        return;
+        return
       }
-      this.fillMissingInfo();
+      this.fillMissingInfo()
       const formData = {
         name: this.name,
         description: this.desc,
         level: this.levelInput,
-      };
-      this.$store.dispatch('addRecord', formData);
-      this.$emit('close');
+      }
+      this.$store.dispatch('addRecord', formData)
+      this.$emit('close')
     },
   },
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
