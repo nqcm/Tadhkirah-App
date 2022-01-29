@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="container">
-      <div v-if="todayHasRecords">
+      <div class="card-container" v-if="todayHasRecords">
         <single-record-card
           v-for="record in filteredRecords"
           :key="record.id"
@@ -14,10 +14,7 @@
       <empty v-else text="You don't have any records!"></empty>
     </div>
 
-    <div>
-      <h3>Today's Done Records</h3>
-      <done-records></done-records>
-    </div>
+    <done-records></done-records>
   </section>
 </template>
 
@@ -57,5 +54,16 @@ export default {
             pt-2
             pb-2
             md:rounded-xl;
+}
+
+.card-container {
+  @apply m-auto
+          px-2
+          py-4
+          grid
+          gap-y-8
+          md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4
+          justify-items-center
+          md:place-content-start;
 }
 </style>

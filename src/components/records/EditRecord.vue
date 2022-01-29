@@ -21,6 +21,7 @@
                   <input
                     v-model.trim="userInput.name"
                     type="text"
+                    maxlength="16"
                     class="name"
                     id="name"
                     @blur="clearInvalidName"

@@ -14,6 +14,7 @@
               v-model.trim="name"
               type="text"
               placeholder="Name of Surah / Hizb / Portion"
+              maxlength="16"
               class="name"
               id="name"
               @blur="clearInvalidForm"

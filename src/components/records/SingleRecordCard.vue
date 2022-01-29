@@ -106,7 +106,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+article {
+  @apply inline-block;
+}
+
 .content {
   @apply h-full
           pt-2
@@ -118,11 +122,11 @@ export default {
 }
 
 .badge {
-  @apply flex-none ml-2;
+  @apply ml-2 h-1/6;
 }
 
 .text {
-  @apply flex-grow cursor-pointer my-4;
+  @apply overflow-hidden cursor-pointer my-4 h-3/6;
 }
 
 .text h2 {
@@ -134,7 +138,7 @@ export default {
 }
 
 .small-text {
-  @apply my-8;
+  @apply my-8 h-1/6;
 }
 
 .small-text p {
@@ -153,28 +157,7 @@ export default {
 }
 
 .nav {
-  @apply flex-none flex flex-row justify-center;
-}
-
-.single-rec-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.single-rec-header h2 {
-  font-size: 2rem;
-  margin: 0.5rem 0;
-}
-
-.single-rec-header p {
-  margin: 0.5rem 0;
-}
-
-.single-rec-nav {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  @apply flex flex-row justify-center h-1/6;
 }
 
 .dialog-enter-active,
