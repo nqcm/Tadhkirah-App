@@ -22,8 +22,8 @@ export default {
     const recs = getters.todaysRecords
     return recs && recs.length > 0
   },
-  doneRecords(_, getters) {
-    const allRecs = getters.records
+  doneRecords(state) {
+    const allRecs = state.records
     const recs = allRecs.filter(rec => rec.doneDate === now)
     return recs
   },

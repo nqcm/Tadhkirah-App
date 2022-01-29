@@ -27,8 +27,16 @@
         </div>
 
         <div class="nav">
-          <base-redo-button @click="makeLevelOne"></base-redo-button>
-          <base-check-button @click="markDone"></base-check-button>
+          <base-redo-button
+            v-if="!isLevelOneSaving"
+            @click="makeLevelOne"
+          ></base-redo-button>
+          <base-saving v-else></base-saving>
+          <base-check-button
+            v-if="!isDoneSaving"
+            @click="markDone"
+          ></base-check-button>
+          <base-saving v-else></base-saving>
         </div>
       </div>
     </base-card>

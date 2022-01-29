@@ -10,6 +10,7 @@ import BaseButton from './components/UI/BaseButton.vue'
 import BaseBadge from './components/UI/BaseBadge.vue'
 import BaseModal from './components/UI/BaseModal.vue'
 import BaseSpinner from './components/UI/BaseSpinner.vue'
+import BaseSaving from './components/UI/BaseSaving.vue'
 
 import '@/plugins/firebase'
 
@@ -20,6 +21,7 @@ app.component('base-button', BaseButton)
 app.component('base-badge', BaseBadge)
 app.component('base-modal', BaseModal)
 app.component('base-spinner', BaseSpinner)
+app.component('base-saving', BaseSaving)
 
 app.use(store)
 app.use(router)
