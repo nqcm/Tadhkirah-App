@@ -1,18 +1,5 @@
 <template>
   <section>
-    <!-- <div v-if="hasRecords">
-      <single-record-card
-        v-for="record in filteredRecords"
-        :key="record.id"
-        :id="record.id"
-        :name="record.name"
-        :description="record.description"
-        :level="record.level"
-        :todaysRec="false"
-      >
-      </single-record-card>
-    </div> -->
-
     <h3>Recently revised</h3>
 
     <div class="divider"></div>
@@ -26,11 +13,14 @@
         :level="record.level"
       ></done-record-card>
     </div>
+
+    <div else>
+      <p>You haven't revised any portions recently</p>
+    </div>
   </section>
 </template>
 
 <script>
-// import SingleRecordCard from './SingleRecordCard.vue'
 import DoneRecordCard from './DoneRecordCard.vue'
 export default {
   name: 'TodaysRecords',

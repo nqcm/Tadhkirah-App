@@ -81,12 +81,6 @@ export default {
         return false
       }
     },
-    doneButtonText() {
-      return this.isDoneSaving ? 'Saving...' : 'Done'
-    },
-    levelOneButtonText() {
-      return this.isLevelOneSaving ? 'Saving...' : 'Back to Level 1'
-    },
   },
 
   methods: {

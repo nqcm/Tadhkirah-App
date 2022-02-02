@@ -1,18 +1,20 @@
 <template>
-  <div class="container">
-    <div>
-      <div v-if="hasRecords" class="card-container">
-        <all-records-single-card
-          v-for="record in filteredRecords"
-          :key="record.id"
-          :id="record.id"
-        >
-        </all-records-single-card>
+  <section>
+    <div class="container">
+      <div>
+        <div v-if="hasRecords" class="card-container">
+          <all-records-single-card
+            v-for="record in filteredRecords"
+            :key="record.id"
+            :id="record.id"
+          >
+          </all-records-single-card>
+        </div>
+
+        <empty v-else text="No records found!"></empty>
       </div>
-
-      <empty v-else text="No records found!"></empty>
     </div>
-
+    <done-records></done-records>
     <teleport to="#dialog">
       <transition name="modal">
         <base-modal :show="!!error" @close="error = false">
@@ -22,16 +24,19 @@
         </base-modal>
       </transition>
     </teleport>
-  </div>
+  </section>
 </template>
 
 <script>
 import AllRecordsSingleCard from './AllRecordsSingleCard.vue'
+import DoneRecords from './DoneRecords.vue'
 import Empty from './Empty.vue'
+
 export default {
   name: 'AllRecords',
   components: {
     AllRecordsSingleCard,
+    DoneRecords,
     Empty,
   },
   data() {
@@ -56,7 +61,7 @@ export default {
 .container {
   @apply bg-grey-dark
             w-11/12 lg:w-10/12
-            h-screen
+            min-h-screen
             mx-auto
             md:mt-2
             pt-2

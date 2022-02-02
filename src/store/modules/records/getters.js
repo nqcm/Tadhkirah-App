@@ -3,6 +3,13 @@ import { DateTime } from 'luxon'
 const today = DateTime.now()
 const now = today.toISO().split('T')[0]
 
+function dateComparison(a, b) {
+  const d1 = DateTime.fromISO(a.doneDate)
+  const d2 = DateTime.fromISO(b.doneDate)
+
+  return d1 - d2
+}
+
 export default {
   records(state) {
     // return state.records;
@@ -24,7 +31,8 @@ export default {
   },
   doneRecords(state) {
     const allRecs = state.records
-    const recs = allRecs.filter(rec => rec.doneDate === now)
+    const recs = allRecs.filter(rec => rec.doneDate.split('T')[0] === now)
+    recs.sort(dateComparison).slice(Math.max(recs.length - 10, 0))
     return recs
   },
   doneHasRecords(_, getters) {

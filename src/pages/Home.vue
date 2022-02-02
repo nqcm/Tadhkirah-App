@@ -20,12 +20,15 @@
 
     <add-record v-if="dialogOpen" @close="closeDialog"></add-record>
   </section>
+
+  <the-footer></the-footer>
 </template>
 
 <script>
-import { getUserState } from '../plugins/firebase'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 import TheHeader from '../components/layout/TheHeader.vue'
+import TheFooter from '../components/layout/TheFooter.vue'
 
 import RecordFilter from '../components/records/RecordFilter.vue'
 import AddRecordButton from '../components/records/AddRecordButton.vue'
@@ -37,6 +40,7 @@ export default {
   name: 'Home',
   components: {
     TheHeader,
+    TheFooter,
     RecordFilter,
     AddRecordButton,
     AllRecords,
@@ -50,25 +54,33 @@ export default {
       dialogOpen: false,
       email: '',
       isLoading: false,
+      unsubscribe: null,
     }
   },
 
   mounted() {
-    this.isAuth()
-  },
-
-  methods: {
-    async isAuth() {
-      this.isLoading = true
-      const user = await getUserState()
+    this.isLoading = true
+    const auth = getAuth()
+    this.unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        this.$store.dispatch('setUser', user.uid)
-        this.email = user.email
-        this.loadRecords()
+        this.setUser(user)
       } else {
         this.$router.replace('/login')
       }
+    })
+  },
+
+  unmounted() {
+    this.unsubscribe()
+  },
+
+  methods: {
+    async setUser(user) {
+      this.$store.dispatch('setUser', user.uid)
+      this.email = user.email
+      this.loadRecords()
     },
+
     async loadRecords() {
       this.isLoading = true
       try {
@@ -79,6 +91,7 @@ export default {
       }
       this.isLoading = false
     },
+
     async logout() {
       this.email = ''
       try {

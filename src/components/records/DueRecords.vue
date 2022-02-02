@@ -49,6 +49,7 @@ export default {
 .container {
   @apply bg-grey-dark
             w-11/12 lg:w-10/12
+            min-h-screen
             mx-auto
             md:mt-2
             pt-2

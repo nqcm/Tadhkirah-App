@@ -12,9 +12,9 @@ import {
 
 import calculateDueDate from '../../../utilities/calculateDueDate'
 
-const now = DateTime.now()
-  .toISO()
-  .split('T')[0]
+const dateWithTime = DateTime.now().toISO()
+
+const now = dateWithTime.split('T')[0]
 
 export default {
   async loadRecords(context) {
@@ -42,6 +42,7 @@ export default {
 
     context.commit('loadRecords', records)
   },
+
   async addRecord(context, data) {
     const dueDate = calculateDueDate(data.level, now)
     const userId = context.rootGetters.userId
@@ -52,7 +53,7 @@ export default {
       level: data.level,
       description: data.description,
       revDate: now,
-      doneDate: now,
+      doneDate: dateWithTime,
       dueDate: dueDate,
       counter: 0,
       dateAdded: now
@@ -66,6 +67,7 @@ export default {
       id: docRef.id
     })
   },
+
   async editRecord(context, data) {
     const dueDate = calculateDueDate(data.level, data.revDate)
     const userId = context.rootGetters.userId
@@ -90,6 +92,7 @@ export default {
       id: data.id
     })
   },
+
   async makeLevelOne(context, id) {
     const userId = context.rootGetters.userId
     const rec = context.getters.records.find(r => r.id === id)
@@ -101,7 +104,7 @@ export default {
       level: 1,
       description: rec.description,
       revDate: now,
-      doneDate: now,
+      doneDate: dateWithTime,
       dueDate: dueDate,
       counter: rec.counter + 1,
       dateAdded: rec.dateAdded
@@ -114,6 +117,7 @@ export default {
       id: id
     })
   },
+
   async markRecDone(context, id) {
     const userId = context.rootGetters.userId
     const rec = context.getters.records.find(r => r.id === id)
@@ -126,7 +130,7 @@ export default {
       level: newLevel,
       description: rec.description,
       revDate: now,
-      doneDate: now,
+      doneDate: dateWithTime,
       dueDate: dueDate,
       counter: rec.counter + 1,
       dateAdded: rec.dateAdded
@@ -139,6 +143,7 @@ export default {
       id: id
     })
   },
+
   async deleteRecord(context, id) {
     const userId = context.rootGetters.userId
     const db = getFirestore()

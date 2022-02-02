@@ -26,7 +26,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   const requiresUnAuth = to.matched.some(record => record.meta.requiresUnAuth)
-  const isAuth = await getUserState()
+  const isAuth = await getUserState
 
   if (requiresAuth && !isAuth) next('/login')
   else if (requiresUnAuth && isAuth) next('/')
