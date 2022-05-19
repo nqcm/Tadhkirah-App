@@ -14,7 +14,7 @@
       ></done-record-card>
     </div>
 
-    <div else>
+    <div v-else>
       <p>You haven't revised any portions recently</p>
     </div>
   </section>
@@ -57,6 +57,10 @@ h3 {
 }
 
 .card-list {
-  @apply flex p-6 overflow-hidden;
+  @apply flex justify-center p-6 overflow-hidden;
+}
+
+p {
+  @apply text-white;
 }
 </style>

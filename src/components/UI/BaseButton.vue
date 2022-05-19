@@ -18,7 +18,8 @@ export default {
 
 <style scoped>
 button {
-  @apply sm:text-lg md:text-xl text-gold;
+  @apply sm:text-lg md:text-xl
+        text-gold;
 }
 
 .gold {
